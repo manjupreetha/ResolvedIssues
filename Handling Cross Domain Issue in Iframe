@@ -1,0 +1,53 @@
+<!--
+In Parent File
+-->
+
+<div>
+<button onclick="Click()">Click me</button>
+<iframe id="iframe_id" name="iframe_id" src= "...../Child.html" ></iframe>
+</div>
+
+
+<script>
+function Click() {
+   document.getElementById('iframe_id').contentWindow.postMessage("ReceiveMessage",'*');
+}
+</script>
+
+<!--
+In Child File
+-->
+
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script type="text/javascript">
+		window.addEventListener("message", receiveMessage, false);
+
+		function receiveMessage(event)
+		{
+			if(event.data === "ReceiveMessage") {
+				var scope = angular.element(document.getElementById('div1')).scope();
+					scope.mc.showMessage("Message Received");
+			}
+		}
+	
+    </script>
+<body>
+
+<div ng-app="myApp" >
+	<div  id="div1" ng-controller="myController as mc">
+            <p id= "p1"/>
+    </div>
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myController', function($scope) {
+    $scope.showMessage = function(msg) {
+       document.getElementById("p1").innerHTML = msg;
+    }
+});
+</script>
+
+</body>
+</html>
